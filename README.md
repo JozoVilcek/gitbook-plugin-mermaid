@@ -1,2 +1,2 @@
-gitbook-mermaid-plugin
-======================
+Mermaid plugin for GitBook
+==============

@@ -1,0 +1,15 @@
+{
+  "name": "gitbook-mermaid",
+  "description": "Plugin for GitBook which renders Mermaid flow from markdown.",
+  "main": "index.js",
+  "version": "0.0.1",
+  "engines": {
+    "gitbook": "*"
+  },
+  "homepage": "https://github.com/JozoVilcek/gitbook-mermaid-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JozoVilcek/gitbook-mermaid-plugin"
+  },
+  "license": "Apache 2"
+}
