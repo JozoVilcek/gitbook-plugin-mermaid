@@ -24,6 +24,7 @@ module.exports = {
   book: {
     assets: "./book",
     js: [
+      "plugin.js"
     ],
     html: {
       "head:end": function(options) {
