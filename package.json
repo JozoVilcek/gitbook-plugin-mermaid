@@ -9,7 +9,7 @@
   "homepage": "https://github.com/JozoVilcek/gitbook-mermaid-plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JozoVilcek/gitbook-mermaid-plugin"
+    "url": "https://github.com/JozoVilcek/gitbook-mermaid-plugin.git"
   },
   "license": "Apache 2"
 }
