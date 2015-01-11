@@ -1,5 +1,6 @@
 ## Mermaid plugin for GitBook 
 [![Build Status](https://travis-ci.org/JozoVilcek/gitbook-mermaid-plugin.svg?branch=master)](https://travis-ci.org/JozoVilcek/gitbook-mermaid-plugin)
+[![NPM version](https://badge.fury.io/js/gitbook-mermaid.svg)](http://badge.fury.io/js/gitbook-mermaid)
 
 Plugin for [GitBook](https://github.com/GitbookIO/gitbook) which renders [Mermaid](https://github.com/knsv/mermaid) diagrams and flow charts detected in the book markdown.
 
