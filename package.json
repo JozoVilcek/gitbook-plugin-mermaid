@@ -6,10 +6,10 @@
   "engines": {
     "gitbook": "*"
   },
-  "homepage": "https://github.com/JozoVilcek/gitbook-mermaid-plugin",
+  "homepage": "https://github.com/JozoVilcek/gitbook-plugin-mermaid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JozoVilcek/gitbook-mermaid-plugin.git"
+    "url": "https://github.com/JozoVilcek/gitbook-plugin-mermaid.git"
   },
   "license": "Apache 2"
 }
