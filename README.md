@@ -9,14 +9,14 @@ Plugin for [GitBook](https://github.com/GitbookIO/gitbook) which renders [Mermai
 You can use install via **NPM**:
 
 ```
-$ npm install gitbook-mermaid-plugin
+$ npm install gitbook-plugin-mermaid
 ```
 
 And use it for your book with in the book.json:
 
 ```
 {
-    "plugins": ["gitbook-mermaid"]
+    "plugins": ["mermaid"]
 }
 ```
 
