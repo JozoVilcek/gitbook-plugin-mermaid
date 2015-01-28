@@ -2,7 +2,7 @@
 
 function processPage(page) {
 
-  var mermaidMatches = page.content.match(/^```mermaid((.*\n)+?)?```$/igm);
+  var mermaidMatches = page.content.match(/^```mermaid((.*(\r\n?|\n))+?)?```$/igm);
   if (mermaidMatches) {
     var count = mermaidMatches.length;
     for (var i = 0; i < count; i++) {
