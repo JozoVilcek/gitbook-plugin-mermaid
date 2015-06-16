@@ -1,23 +1,7 @@
-
-
-function processPage(page) {
-
-  var mermaidMatches = page.content.match(/^```mermaid((.*(\r\n?|\n))+?)?```$/igm);
-  if (mermaidMatches) {
-    var count = mermaidMatches.length;
-    for (var i = 0; i < count; i++) {
-
-      var mermaid = mermaidMatches[i];
-      var mermaidClean = mermaid.replace(/```mermaid/igm, '');
-      mermaidClean = mermaidClean.replace(/```/igm, '');
-
-      page.content = page.content.replace(mermaid,
-      '<div class="mermaid">' + mermaidClean + '</div>');
-    }
-  }
-
-  return page;
-}
+var phantom = require("phantom");
+var Q = require('q');
+var path = require('path');
+var cheerio = require("cheerio");
 
 
 module.exports = {
@@ -25,20 +9,63 @@ module.exports = {
     assets: "./book",
     js: [
       "plugin.js"
-    ],
-    html: {
-      "head:end": function(options) {
-         // script is added after head section and not via book:js section
-         //   because otherwise 'require' definitions conflicts with
-         //   gitbook's app.js script (I can not tell why and how to fix)
-         return '<script src="' + options.staticBase + '/plugins/gitbook-plugin-mermaid/mermaid.full.min.js" id="mermaid-script"></script>';
-      },
-    }
+    ]
   },
   hooks: {
-    // Before parsing markdown
-    "page:before": function(page) {
+    page: function(page) {
       return processPage(page);
-    },
+    }
   }
 };
+
+
+function processPage(page) {
+
+    var deferred = Q.defer();
+
+    Q.all(page.sections.map(function (section) {
+        var $ = cheerio.load(section.content);
+        return Q.all($(".lang-mermaid").map(function(i, n) {
+            var codeNode = $(n);
+            return convertToSvg(codeNode.html())
+                .then(function (svgCode) {
+                    var $ = cheerio.load(svgCode);
+                    codeNode.parent().replaceWith($.html());
+                });
+        })).then(function () {
+            section.content = $.html();
+        });
+    })).then(function() {
+        deferred.resolve(page);
+    });
+
+    return deferred.promise;
+}
+
+
+function convertToSvg(mermaidCode) {
+
+  var deferred = Q.defer();
+  phantom.create(function (ph) {
+    ph.createPage(function (page) {
+
+//      page.injectJs('../dist/mermaid.min.js')
+
+      var htmlPagePath = path.join(__dirname, 'convert/converter.html');
+  
+      page.open(htmlPagePath, function (status) {
+        page.evaluate(
+          function (code) {
+            return renderToSvg(code);
+          },
+          function (result) {
+            ph.exit();
+            deferred.resolve(result);
+          },
+          mermaidCode);
+      });
+    });
+  });
+
+  return deferred.promise;
+}
