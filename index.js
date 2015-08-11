@@ -1,47 +1,24 @@
 var phantom = require("phantom");
 var Q = require('q');
 var path = require('path');
-var cheerio = require("cheerio");
 
 
 module.exports = {
-  book: {
-    assets: "./book",
-    js: [
-      "plugin.js"
-    ]
-  },
-  hooks: {
-    page: function(page) {
-      return processPage(page);
+  blocks: {
+    mermaid: {
+      process: function(blk) {
+        return processBlock(blk);
+      }
     }
   }
 };
 
-
-function processPage(page) {
-
-    var deferred = Q.defer();
-
-    Q.all(page.sections.map(function (section) {
-        var $ = cheerio.load(section.content);
-        return Q.all($(".lang-mermaid").map(function(i, n) {
-            var codeNode = $(n);
-            return convertToSvg(codeNode.html())
-                .then(function (svgCode) {
-                    var $ = cheerio.load(svgCode);
-                    codeNode.parent().replaceWith($.html());
-                });
-        })).then(function () {
-            section.content = $.html();
-        });
-    })).then(function() {
-        deferred.resolve(page);
-    });
-
-    return deferred.promise;
+function processBlock(block) {
+  return convertToSvg(block.body)
+      .then(function (svgCode) {
+          return svgCode.replace(/mermaidChart1/g, getId());
+      });
 }
-
 
 function convertToSvg(mermaidCode) {
 
@@ -49,10 +26,8 @@ function convertToSvg(mermaidCode) {
   phantom.create(function (ph) {
     ph.createPage(function (page) {
 
-//      page.injectJs('../dist/mermaid.min.js')
-
       var htmlPagePath = path.join(__dirname, 'convert/converter.html');
-  
+
       page.open(htmlPagePath, function (status) {
         page.evaluate(
           function (code) {
@@ -68,4 +43,13 @@ function convertToSvg(mermaidCode) {
   });
 
   return deferred.promise;
+}
+
+function getId() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return "mermaidChart-" + s4() + s4();
 }

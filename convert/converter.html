@@ -1,9 +1,10 @@
 <html>
 <head>
   <style type="text/css">{ margin: 0; padding: 0; }</style>
-  <script type="text/javascript" src="./js/mermaid.min.js"></script>
-  <script type="text/javascript" src="./js/jquery.js"></script>
+  <script type="text/javascript" src="./assets/mermaid.min.js"></script>
+  <script type="text/javascript" src="./assets/jquery.js"></script>
 
+<link rel="stylesheet" href="./assets/mermaid.css"/>
   <script>
 
     mermaid.initialize({
@@ -11,7 +12,7 @@
       cloneCssStyles: true,
       flowchart: {
         htmlLabels: false
-      }
+      },
     });
 
     function renderToSvg(mermaidCode) {
@@ -36,13 +37,14 @@
       return svgValue;
     }
 
-    // TODO: remove this, it is just to test rendering directly in browser
-    $( document ).ready(function() {
-      var mm = "graph LR\nA[Hard edge] -->|Link text| B(Round edge)\nB --> C{Decision}\nC -->|One| D[Result one]\nC -->|Two| E[Result two]";
-      renderToSvg(mm);
-    });
+    // for debug and test rendering directly in browser
+    //$( document ).ready(function() {
+    //  var mm = "graph LR\nA[Hard edge] -->|Link text| B(Round edge)\nB --> C{Decision}\nC -->|One| D[Result one]\nC -->|Two| E[Result two]";
+    //  renderToSvg(mm);
+    //});
 
   </script>
+
 
 </head>
 <body>
