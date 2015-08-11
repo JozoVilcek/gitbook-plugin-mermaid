@@ -4,12 +4,19 @@
   "main": "index.js",
   "version": "0.0.5-pre",
   "engines": {
-    "gitbook": "*"
+    "gitbook": ">=2.0.0"
   },
   "homepage": "https://github.com/JozoVilcek/gitbook-plugin-mermaid",
   "repository": {
     "type": "git",
     "url": "https://github.com/JozoVilcek/gitbook-plugin-mermaid.git"
+  },
+  "dependencies": {
+    "q": "1.1.2",
+    "phantom": "0.7.2"
+  },
+  "devDependencies": {
+    "phantomjs": "~1.9.12"
   },
   "license": "Apache 2"
 }

@@ -1,44 +1,55 @@
-
-
-function processPage(page) {
-
-  var mermaidMatches = page.content.match(/^```mermaid((.*(\r\n?|\n))+?)?```$/igm);
-  if (mermaidMatches) {
-    var count = mermaidMatches.length;
-    for (var i = 0; i < count; i++) {
-
-      var mermaid = mermaidMatches[i];
-      var mermaidClean = mermaid.replace(/```mermaid/igm, '');
-      mermaidClean = mermaidClean.replace(/```/igm, '');
-
-      page.content = page.content.replace(mermaid,
-      '<div class="mermaid">' + mermaidClean + '</div>');
-    }
-  }
-
-  return page;
-}
+var phantom = require("phantom");
+var Q = require('q');
+var path = require('path');
 
 
 module.exports = {
-  book: {
-    assets: "./book",
-    js: [
-      "plugin.js"
-    ],
-    html: {
-      "head:end": function(options) {
-         // script is added after head section and not via book:js section
-         //   because otherwise 'require' definitions conflicts with
-         //   gitbook's app.js script (I can not tell why and how to fix)
-         return '<script src="' + options.staticBase + '/plugins/gitbook-plugin-mermaid/mermaid.full.min.js" id="mermaid-script"></script>';
-      },
+  blocks: {
+    mermaid: {
+      process: function(blk) {
+        return processBlock(blk);
+      }
     }
-  },
-  hooks: {
-    // Before parsing markdown
-    "page:before": function(page) {
-      return processPage(page);
-    },
   }
 };
+
+function processBlock(block) {
+  return convertToSvg(block.body)
+      .then(function (svgCode) {
+          return svgCode.replace(/mermaidChart1/g, getId());
+      });
+}
+
+function convertToSvg(mermaidCode) {
+
+  var deferred = Q.defer();
+  phantom.create(function (ph) {
+    ph.createPage(function (page) {
+
+      var htmlPagePath = path.join(__dirname, 'convert/converter.html');
+
+      page.open(htmlPagePath, function (status) {
+        page.evaluate(
+          function (code) {
+            return renderToSvg(code);
+          },
+          function (result) {
+            ph.exit();
+            deferred.resolve(result);
+          },
+          mermaidCode);
+      });
+    });
+  });
+
+  return deferred.promise;
+}
+
+function getId() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return "mermaidChart-" + s4() + s4();
+}

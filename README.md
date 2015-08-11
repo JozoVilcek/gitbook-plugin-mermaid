@@ -22,12 +22,14 @@ And use it for your book with in the book.json:
 
 ### How to use it?
 
-Just put the code into fenced code block and tag it **mermaid** key word like this:
-```mermaid
+Include graph in your book as:
+```
+{% mermaid %}
 graph TD;
   A-->B;
   A-->C;
   B-->D;
   C-->D;
+{% endmermaid %}
 ```
-Plugin will pick it up and pack into properly marked div element, where it can be found by mermaid client side rendering.
+Plugin will pick up the block and replace it with generated svg.
