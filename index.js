@@ -1,32 +1,39 @@
-var phantom = require("phantom");
-var Q = require('q');
-var path = require('path');
+var join         = require('path').join;
+var readFileSync = require('fs').readFileSync;
+
+var phantom = require('phantom');
+var Q       = require('q');
 
 
 module.exports = {
   blocks: {
     mermaid: {
       process: function(blk) {
-        return processBlock(blk);
+        var body = blk.body;
+
+        var args = block.args;
+        if(args.length)
+          body = readFileSync(args[0], 'utf8');
+
+        return processBlock(body);
       }
     }
   }
 };
 
-function processBlock(block) {
-  return convertToSvg(block.body)
+function processBlock(body) {
+  return convertToSvg(body)
       .then(function (svgCode) {
           return svgCode.replace(/mermaidChart1/g, getId());
       });
 }
 
 function convertToSvg(mermaidCode) {
-
   var deferred = Q.defer();
   phantom.create(function (ph) {
     ph.createPage(function (page) {
 
-      var htmlPagePath = path.join(__dirname, 'convert/converter.html');
+      var htmlPagePath = join(__dirname, 'convert/converter.html');
 
       page.open(htmlPagePath, function (status) {
         page.evaluate(
