@@ -13,6 +13,7 @@ module.exports = {
         var body = block.body;
 
         var src = block.kwargs.src;
+        if(src)
         {
           var path = decodeURI(resolve(this.ctx.file.path, src));
           body = readFileSync(path, 'utf8');
