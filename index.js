@@ -1,5 +1,6 @@
 var join         = require('path').join;
 var readFileSync = require('fs').readFileSync;
+var resolve      = require('url').resolve;
 
 var phantom = require('phantom');
 var Q       = require('q');
@@ -8,12 +9,14 @@ var Q       = require('q');
 module.exports = {
   blocks: {
     mermaid: {
-      process: function(blk) {
-        var body = blk.body;
+      process: function(block) {
+        var body = block.body;
 
-        var args = block.args;
-        if(args.length)
-          body = readFileSync(args[0], 'utf8');
+        var src = block.kwargs.src;
+        {
+          var path = decodeURI(resolve(this.ctx.file.path, src));
+          body = readFileSync(path, 'utf8');
+        }
 
         return processBlock(body);
       }
