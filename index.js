@@ -1,6 +1,11 @@
-var phantom = require("phantom");
-var Q = require('q');
 var path = require('path');
+
+var phantom = require("phantom");
+var Q       = require('q');
+
+
+const PHANTOMJS_MODULE = require.resolve('phantomjs')
+const PHANTOMJS_BIN = path.resolve(PHANTOMJS_MODULE, '../../bin', 'phantomjs')
 
 
 module.exports = {
@@ -23,7 +28,7 @@ function processBlock(block) {
 function convertToSvg(mermaidCode) {
 
   var deferred = Q.defer();
-  phantom.create(function (ph) {
+  phantom.create({binary: PHANTOMJS_BIN}, function (ph) {
     ph.createPage(function (page) {
 
       var htmlPagePath = path.join(__dirname, 'convert/converter.html');
