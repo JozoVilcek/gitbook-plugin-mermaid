@@ -1,9 +1,13 @@
-var join         = require('path').join;
+var path         = require('path');
 var readFileSync = require('fs').readFileSync;
-var resolve      = require('url').resolve;
+var url          = require('url');
 
 var phantom = require('phantom');
 var Q       = require('q');
+
+
+const PHANTOMJS_MODULE = require.resolve('phantomjs')
+const PHANTOMJS_BIN = path.resolve(PHANTOMJS_MODULE, '../../bin', 'phantomjs')
 
 
 module.exports = {
@@ -15,7 +19,7 @@ module.exports = {
         var src = block.kwargs.src;
         if(src)
         {
-          var path = decodeURI(resolve(this.ctx.file.path, src));
+          var path = decodeURI(url.resolve(this.ctx.file.path, src));
           body = readFileSync(path, 'utf8');
         }
 
@@ -34,10 +38,10 @@ function processBlock(body) {
 
 function convertToSvg(mermaidCode) {
   var deferred = Q.defer();
-  phantom.create(function (ph) {
+  phantom.create({binary: PHANTOMJS_BIN}, function (ph) {
     ph.createPage(function (page) {
 
-      var htmlPagePath = join(__dirname, 'convert/converter.html');
+      var htmlPagePath = path.join(__dirname, 'convert/converter.html');
 
       page.open(htmlPagePath, function (status) {
         page.evaluate(

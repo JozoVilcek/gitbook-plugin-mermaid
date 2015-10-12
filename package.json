@@ -13,10 +13,8 @@
   },
   "dependencies": {
     "q": "1.1.2",
-    "phantom": "0.7.2"
-  },
-  "devDependencies": {
-    "phantomjs": "~1.9.12"
+    "phantom": "0.8.0",
+    "phantomjs": "~1.9.18"
   },
   "license": "Apache 2"
 }
