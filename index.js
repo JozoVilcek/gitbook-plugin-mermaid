@@ -1,6 +1,8 @@
-var path = require('path');
+var path         = require('path');
+var readFileSync = require('fs').readFileSync;
+var url          = require('url');
 
-var phantom = require("phantom");
+var phantom = require('phantom');
 var Q       = require('q');
 
 
@@ -11,22 +13,30 @@ const PHANTOMJS_BIN = path.resolve(PHANTOMJS_MODULE, '../../bin', 'phantomjs')
 module.exports = {
   blocks: {
     mermaid: {
-      process: function(blk) {
-        return processBlock(blk);
+      process: function(block) {
+        var body = block.body;
+
+        var src = block.kwargs.src;
+        if(src)
+        {
+          var path = decodeURI(url.resolve(this.ctx.file.path, src));
+          body = readFileSync(path, 'utf8');
+        }
+
+        return processBlock(body);
       }
     }
   }
 };
 
-function processBlock(block) {
-  return convertToSvg(block.body)
+function processBlock(body) {
+  return convertToSvg(body)
       .then(function (svgCode) {
           return svgCode.replace(/mermaidChart1/g, getId());
       });
 }
 
 function convertToSvg(mermaidCode) {
-
   var deferred = Q.defer();
   phantom.create({binary: PHANTOMJS_BIN}, function (ph) {
     ph.createPage(function (page) {
