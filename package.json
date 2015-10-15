@@ -2,7 +2,7 @@
   "name": "gitbook-plugin-mermaid",
   "description": "Plugin for GitBook which renders Mermaid flow from markdown.",
   "main": "index.js",
-  "version": "0.0.7",
+  "version": "0.0.8-pre",
   "engines": {
     "gitbook": ">=2.0.0"
   },
