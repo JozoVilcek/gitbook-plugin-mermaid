@@ -17,10 +17,10 @@ module.exports = {
         var body = block.body;
 
         var src = block.kwargs.src;
-        if(src)
-        {
-          var path = decodeURI(url.resolve(this.ctx.file.path, src));
-          body = readFileSync(path, 'utf8');
+        if(src) {
+          var relativeSrcPath = url.resolve(this.ctx.file.path, src)
+          var absoluteSrcPath = path.resolve(this.book.root, relativeSrcPath)
+          body = readFileSync(absoluteSrcPath, 'utf8')
         }
 
         return processBlock(body);
