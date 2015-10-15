@@ -19,7 +19,7 @@ module.exports = {
         var src = block.kwargs.src;
         if(src) {
           var relativeSrcPath = url.resolve(this.ctx.file.path, src)
-          var absoluteSrcPath = path.resolve(this.book.root, relativeSrcPath)
+          var absoluteSrcPath = decodeURI(path.resolve(this.book.root, relativeSrcPath))
           body = readFileSync(absoluteSrcPath, 'utf8')
         }
 
