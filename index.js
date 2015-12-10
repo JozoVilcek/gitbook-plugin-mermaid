@@ -41,7 +41,7 @@ function convertToSvg(mermaidCode) {
   phantom.create({binary: PHANTOMJS_BIN}, function (ph) {
     ph.createPage(function (page) {
 
-      var htmlPagePath = path.join(__dirname, 'convert/converter.html');
+      var htmlPagePath = path.join(__dirname, 'converter.html');
 
       page.open(htmlPagePath, function (status) {
         page.evaluate(
