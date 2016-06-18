@@ -11,6 +11,10 @@ const PHANTOMJS_BIN = path.resolve(PHANTOMJS_MODULE, '../../bin', 'phantomjs')
 
 
 module.exports = {
+  book:{
+    assets: "./plugin.js",
+    js:['plugin.js']
+  },
   blocks: {
     mermaid: {
       process: function(block) {
