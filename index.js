@@ -11,6 +11,10 @@ const PHANTOMJS_BIN = path.resolve(PHANTOMJS_MODULE, '../../bin', 'phantomjs')
 
 
 module.exports = {
+  book:{
+    assets: "./plugin.js",
+    js:['plugin.js']
+  },
   blocks: {
     mermaid: {
       process: function(block) {
@@ -18,8 +22,8 @@ module.exports = {
 
         var src = block.kwargs.src;
         if(src) {
-          var relativeSrcPath = url.resolve(this.ctx.file.path, src)
-          var absoluteSrcPath = decodeURI(path.resolve(this.book.root, relativeSrcPath))
+          var relativeSrcPath = url.resolve(this.ctx.ctx.file.path, src)
+          var absoluteSrcPath = decodeURI(this.book.resolve(relativeSrcPath))
           body = readFileSync(absoluteSrcPath, 'utf8')
         }
 
