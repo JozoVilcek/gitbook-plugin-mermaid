@@ -15,7 +15,7 @@
     "jquery": "^2.1.4",
     "mermaid": "^0.5.6",
     "phantom": "0.8.0",
-    "phantomjs": "~1.9.18",
+    "phantomjs": "~2.1.1",
     "q": "1.1.2"
   },
   "license": "Apache 2"
